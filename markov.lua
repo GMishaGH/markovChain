@@ -16,7 +16,7 @@ local text = string.gsub(FullText,"\n",". ")
 text = split(text," ")
 
 function chance()
-    return math.random(1,10) ~= 1
+    return math.random(1,25) ~= -1
 end
 function main(content)
     local iterations = 0
@@ -118,10 +118,10 @@ function main(content)
             
             AnswerString = AnswerString .. " " .. AnswerWord
             question = AnswerWord
-        --else
-        --    AnswerString = ""
+        else
+            AnswerString = "."
         end
-    until string.sub(AnswerString,-1) == "."
+    until string.sub(AnswerString,-1) == "." 
     return AnswerString
 end
 
