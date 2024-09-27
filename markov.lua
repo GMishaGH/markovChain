@@ -14,100 +14,97 @@ local FullText = f:read "*a"
 f:close()
 local text = string.gsub(FullText,"\n",". ")
 text = split(text," ")
-
+print("Total words: " .. #text)
 function chance()
     return math.random(1,25) ~= -1
 end
 function main(content)
-    local iterations = 0
     local question = content
     local answer = split(content," ")
     local AnswerString = content
-    local rank = 0
-    local totalRank = 0
     repeat
-        iterations = iterations + 1
         question = answer[#answer]
         local answerPool = {}
-        local answerCount = 0
+        local found = false
         if #split(AnswerString," ")>=8 then -- I dont care about this shit
             for n,i in pairs(text) do
                 if text[n-7] == answer[#answer-7] and text[n-6] == answer[#answer-6] and text[n-5] == answer[#answer-5] and text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
                     if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 4
+                    found = true
                 end
-            end
-        elseif #split(AnswerString," ")>=7 then
-            for n,i in pairs(text) do
-                if text[n-6] == answer[#answer-6] and text[n-5] == answer[#answer-5] and text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
-                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 4
-                end
-            end
-        elseif #split(AnswerString," ")>=6 then
-            for n,i in pairs(text) do
-                if text[n-5] == answer[#answer-5] and text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
-                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 4
-                end
-            end
-        elseif #split(AnswerString," ")>=5 then
-            for n,i in pairs(text) do
-                if  text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
-                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 4
-                end
-            end
-        elseif  #split(AnswerString," ")>=4 then
-            for n,i in pairs(text) do
-                if  text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
-                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 4
-                end
-            end
-        elseif #split(AnswerString," ")>=3 then
-            for n,i in pairs(text) do
-                if text[n-2] == answer[#answer-2] and text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                    answerCount = answerCount + 1
-                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                    totalRank = totalRank + 1
-                    rank = rank + 3
-                end
-            end 
-        elseif  #split(AnswerString," ")>=2 then
-            if answerCount == 0 then
-                for n,i in pairs(text) do
-                    if #split(AnswerString," ")>=2 and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
-                        if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                        answerCount = answerCount + 1
-                        totalRank = totalRank + 1
-                        rank = rank + 2
-                    end
-                end 
-            end
-        elseif  #split(AnswerString," ")>=1 then
-            if answerCount == 0 then
-                for n,i in pairs(text) do
-                    if #split(AnswerString," ")>=1 and  i == question and text[n+1] then
-                        if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
-                        answerCount = answerCount + 1
-                        totalRank = totalRank + 1
-                        rank = rank + 1
-                    end
-                end 
             end
         end
-        if  answerCount ~= 0 then
+        if not found and #split(AnswerString," ")>=7 then
+            for n,i in pairs(text) do
+                if text[n-6] == answer[#answer-6] and text[n-5] == answer[#answer-5] and text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end
+        end
+        if not found and #split(AnswerString," ")>=6 then
+            for n,i in pairs(text) do
+                if text[n-5] == answer[#answer-5] and text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end
+        end
+        if not found and #split(AnswerString," ")>=5 then
+            for n,i in pairs(text) do
+                if  text[n-4] == answer[#answer-4] and text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end
+        end
+        if not found and #split(AnswerString," ")>=4 then
+            for n,i in pairs(text) do
+                if  text[n-3] == answer[#answer-3] and text[n-2] == answer[#answer-2] and  text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end
+        end
+        if not found and #split(AnswerString," ")>=3 then
+            for n,i in pairs(text) do
+                if text[n-2] == answer[#answer-2] and text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end 
+        end
+        if not found and #split(AnswerString," ")>=2 then
+            for n,i in pairs(text) do
+                if text[n-1] == answer[#answer-1] and i == question and text[n+1] and text[n-1] and chance() then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end 
+        end
+        if not found and #split(AnswerString," ")>=1 then
+            for n,i in pairs(text) do
+                if i == question and text[n+1] then
+                    if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                    found = true
+                end
+            end 
+        end
+        local maxChars = 999
+        if not found then
+            for i = #question-1, 1, -1 do
+                for n,word in pairs(text) do
+                    if #question <= #word then
+                        if maxChars > i and string.sub(string.lower(word), i) == string.sub(string.lower(question), i) then
+                            if answerPool[text[n+1]] == nil then answerPool[text[n+1]] = 1 else answerPool[text[n+1]] = answerPool[text[n+1]] + 1 end
+                            maxChars = i
+                            found = true
+                        end
+                    end
+                end
+            end
+        end
+        if found then
             local AnswerWord = ""
             for word,popular in pairs(answerPool) do
                 if answerPool[AnswerWord] == nil or popular >= answerPool[AnswerWord] then 
@@ -115,7 +112,6 @@ function main(content)
                 end
             end
             table.insert(answer,AnswerWord)
-            
             AnswerString = AnswerString .. " " .. AnswerWord
             question = AnswerWord
         else
