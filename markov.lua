@@ -14,9 +14,21 @@ local FullText = f:read "*a"
 f:close()
 local text = string.gsub(FullText,"\n",". ")
 text = split(text," ")
-print("Total words: " .. #text)
+
+function comma_value(amount)
+  local formatted = amount
+  while true do  
+    formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+    if (k==0) then
+      break
+    end
+  end
+  return formatted
+end
+
+print("Total words: " .. comma_value(#text))
 function chance()
-    return math.random(1,25) ~= -1
+    return math.random(1,100) ~= -1
 end
 function main(content)
     local question = content
