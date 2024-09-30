@@ -1,4 +1,5 @@
 import requests
+from concurrent.futures import ThreadPoolExecutor
 import time
 
 # This was written via cGPT because I'm lazy and Python is not my main language
@@ -10,7 +11,7 @@ def append_string_to_txt(filename, text):
     with open(filename, 'a', encoding='utf-8') as file:
         # Дописываем строку в конец файла
         file.write(text + '\n')  # Добавляем перевод строки после текста
-    print(f"Строка успешно добавлена в {filename}")
+    #print(f"Строка успешно добавлена в {filename}")
 def get_random_wikipedia_pages(num_pages=10):
     # URL MediaWiki API для получения случайных страниц
     url = "https://en.wikipedia.org/w/api.php"
@@ -63,13 +64,18 @@ def get_wikipedia_page_extract(page_title):
                 return "Текст не найден"
     else:
         return f"Ошибка при выполнении запроса: {response.status_code}"
-
-n = 0
-for i in get_random_wikipedia_pages(500):
-    n += 1
+executor = ThreadPoolExecutor()
+futures = []
+def main(i):
     page_text = get_wikipedia_page_extract(i["title"])
     append_string_to_txt('texts.txt', page_text)
-    print("[" + str(n) + "] " + i["title"] + "; len: " + str(len(page_text.split(" "))))
-with open('texts.txt', 'r', encoding='utf-8') as file:
-    print(len(file.read().split(" ")))
-    time.sleep(10)
+    print(i["title"] + "; words: " + str(len(page_text.split(" "))))
+
+t = time.time() + 15 * 60
+while t >= time.time():
+    for i in get_random_wikipedia_pages(500):
+        future = futures.append(executor.submit(main, i))
+    for future in futures:
+        future.result()
+    time.sleep(1)
+print("DONE")
