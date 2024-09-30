@@ -1,5 +1,5 @@
 markovChain = require("./markov.lua")
 
-local promt = "Biden"
+local promt = "Lua"
 
 print("Promt: " .. promt .."\n\nResult: \n".. markovChain(promt) .. "\n\n")
